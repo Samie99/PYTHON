@@ -1,0 +1,12 @@
+noun = input("Noun: ")
+animal = input("Animal: ")
+propernoun = input("Proper Noun: ")
+object = input("Object: ")
+color = input("Color: ")
+food = input("Food: ")
+
+print("One day, a " + noun + " flew across the world and landed on a " + animal + ".")
+print("The " + animal + " got scared and ran to the nearest " + propernoun + ".")
+print("The animal ran so fast and jumped over a " + color + " " + object + ".")
+print("After running for hours, the " + animal + " stopped to eat a " + food + ".")
+print("The End.")
