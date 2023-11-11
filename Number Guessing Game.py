@@ -23,7 +23,7 @@ def choose_mode():
     # Loop that only stops when player input is a single whole integer
     while True:
         usr_choice = input(f"\nChoose a number between {MINIMUM_VALUE} and {MAXIMUM_VALUE}:\n")
-        if usr_choice.isdigit() is False:
+        if not usr_choice.isdigit():
             continue
         if MAXIMUM_VALUE >= int(usr_choice) >= MINIMUM_VALUE:
             break
