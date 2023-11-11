@@ -23,14 +23,14 @@ let_len = len(word)
 # Initializes the answer with underscores to represent unknown letters
 answer = "_" * let_len
 
-print(f"\n\n-----HANGMAN-----\nTOPIC: {chosen_topic}")
+print(f"\n\n-----HANGMAN-----")
 counter = 0
 
-def choosing_letter(word):
+def choosing_letter(word, chosen_topic):
     global answer, counter
 
     # Displays the current state of the word with guessed letters
-    print(f"\nWORD: {answer}")
+    print(f"\nTOPIC: {chosen_topic}\nWORD: {answer}")
 
     # Loop to get a valid user input for a letter
     while True:
@@ -39,32 +39,20 @@ def choosing_letter(word):
             break
         continue
 
-    index = 0
-    letter_counter = 0
-
-    # Checks if the chosen letter (case insensitive) is in the word
-    for x in word:
-        if x == chosen.upper() or x == chosen.lower():
-            letter_counter += 1
-
     # Updates the answer with correctly guessed letters
-    while chosen.upper() in word and letter_counter > 0:
-        index = word.index(str(chosen.upper()))
-        answer = answer[:index] + word[index] + answer[index + 1:]
-        letter_counter -= 1
-
-    while chosen.lower() in word and letter_counter > 0:
-        index = word.index(str(chosen.lower()))
-        answer = answer[:index] + word[index] + answer[index + 1:]
-        letter_counter -= 1
+    for index, x in enumerate(word):
+        if x.lower() == chosen.lower():
+            answer = answer[:index] + word[index] + answer[index + 1:]
 
 # Main game loop, allowing the user to guess letters
-while counter < 5:
-    choosing_letter(word)
+while counter < MAX_TRIES:
+    choosing_letter(word, chosen_topic)
     counter += 1
+    # Check if all letters have been guessed
+    if "_" not in answer:
+        print(f"\nWORD: {word}\n -----YOU WIN-----")
+        break
 
 # Checks if there are no underscores left in the answer to determine the win condition
-if "_" not in answer:
-    print(f"WORD: {word}\n -----YOU WIN-----")
-else:
-    print(f"WORD: {word}\n -----YOU LOSE-----")
+if "_" in answer:
+    print(f"\nWORD: {word}\n -----YOU LOSE-----")
