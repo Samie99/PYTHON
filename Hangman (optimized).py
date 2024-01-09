@@ -30,7 +30,7 @@ def choosing_letter(word, chosen_topic):
     global answer, counter
 
     # Displays the current state of the word with guessed letters
-    print(f"\nTOPIC: {chosen_topic}\nWORD: {answer}")
+    print(f"\nTOPIC: {chosen_topic}\nWORD: {answer}\n")
 
     # Loop to get a valid user input for a letter
     while True:
