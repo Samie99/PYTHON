@@ -31,5 +31,3 @@ def romanToInt(s):
             total += (stops.get(x))
             check += 1
     print(total)
-
-romanToInt("MMMCDXC")
