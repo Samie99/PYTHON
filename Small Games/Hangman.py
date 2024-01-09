@@ -1,6 +1,6 @@
 import random
 
-MAX_TRIES = 5
+MAX_TRIES = 10
 
 WORD_LISTS = {
     "Fruits" : ["Apple", "Banana", "Pineapple", "Kiwi", "Orange", "Tomato", "Grape", "Cherry", "Strawberry", "Lime", "Pear", "Melon", "Peach"],
@@ -31,7 +31,7 @@ counter = 0
 def choosing_letter(word):
     global answer, counter
 
-    print(f"\nWORD: {answer}")
+    print(f"WORD: {answer}")
     while True:
         chosen = input(f"({counter+1}/{MAX_TRIES}) CHOOSE A LETTER:\n")
         if chosen.isalpha() and len(chosen) == 1:
