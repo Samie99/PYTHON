@@ -3,6 +3,6 @@ def isPalindrome(x):
     for z in str(x):
         listed.append(z)
     if list(reversed(listed)) == listed:
-        print(True)
+        return(True)
     else:
-        print(False)
+        return(False)

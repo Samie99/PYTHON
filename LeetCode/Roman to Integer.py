@@ -30,4 +30,4 @@ def romanToInt(s):
         if x in stops:
             total += (stops.get(x))
             check += 1
-    print(total)
+    return(total)

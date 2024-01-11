@@ -8,4 +8,4 @@ def twoSum(nums, target):
             ind_1 = nums.index(answers[0])
             nums[ind_1] = 'x'
             ind_2 = nums.index(answers[1])
-    print([ind_1, ind_2])
+    return([ind_1, ind_2])
