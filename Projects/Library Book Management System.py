@@ -4,97 +4,93 @@ class Book:
         self.author = author
         self.status = status
 
+    def __str__(self):
+        return f'({self.status}) - {self.title}, By {self.author}'
+
 class Library:
     def __init__(self):
         self.books = []
 
-    def library_status(self):
-        count = 0
+    def library_list(self, status_filter = None):
         print()
-        for book_dict in self.books:
-            count += 1
-            print(f'{count}. ({book_dict['Status']}) - {book_dict['Title']}, By {book_dict['Author']}')
+        for i, book in enumerate(self.books, start= 1):
+            if not status_filter or book.status == status_filter:
+                print(f'{i}. {book}')
         print()
 
     def check_out(self):
-        count = 0
-        print()
-        for book_dict in self.books:
-            if book_dict['Status'] == 'AVAILABLE':
-                count += 1
-                print(f'{count}. ({book_dict['Status']}) - {book_dict['Title']}, By {book_dict['Author']}')
-        if count == 0:
-            print('No Books Available.\n')
-            return
-        print()
         while True:
-            count = 0
-            print('Enter Book Title to Check Out, (Q) to Quit.')
-            book_choice = input('Title (case sensitive): ')
             print()
-            for book_dict in self.books:
-                if book_choice == book_dict['Title'] and book_dict['Status'] == 'AVAILABLE':
-                    count += 1
-                    print(f'({book_dict['Status']}) - {book_dict['Title']}, By {book_dict['Author']}\n')
+            available_books = [book for book in self.books if book.status == 'AVAILABLE']
+            if len(available_books) == 0:
+                print('No Books Available.\nReturning to Menu...\n')
+                return
+            for i, book in enumerate(available_books, start= 1):
+                print(f'{i}. {book}')
+            print()
+
+            print('Enter Book Title to Check Out, (Q) to Quit.')
+            book_input = input('Title: ')
+            if book_input.lower() == 'q':
+                print('Returning to Menu...\n')
+                return
+            found = False
+            for i, book in enumerate(available_books, start= 1):
+                if book_input.lower() == book.title.lower():
+                    found = True
+                    print(f'\n({book.status}) - {book.title}, By {book.author}\n')
                     while True:
                         choice = input('Check Out? (Y/N): ')
-                        if choice == 'Y':
-                            book_dict['Status'] = 'UNAVAILABLE'
-                            print(f'Checked Out: {book_dict['Title']}, By {book_dict['Author']}\n')
+                        if choice.lower() == 'y':
+                            book.status = 'UNAVAILABLE'
+                            print(f'Checked Out: {book.title}, By {book.author}')
                             break
-                        elif choice == 'N':
-                            print()
+                        elif choice.lower() == 'n':
                             break
-
-            if book_choice == 'Q':
-                print()
-                return
-            if count == 0:
-                print('Invalid Book Title\n')
+            if not found:
+                print(f"'{book_input}' is Unavailable or Does Not Exist.")
                 continue
+
 
     def return_book(self):
-        count = 0
-        print()
-        for book_dict in self.books:
-            if book_dict['Status'] == 'UNAVAILABLE':
-                count += 1
-                print(f'{count}. ({book_dict['Status']}) - {book_dict['Title']}, By {book_dict['Author']}')
-        if count == 0:
-            print('No Books Returnable.\n')
-            return
         while True:
-            count = 0
+            print()
+            unavailable_books = [book for book in self.books if book.status == 'UNAVAILABLE']
+            if len(unavailable_books) == 0:
+                print(f"No Books Returnable.\nReturning to Menu...\n")
+                return
+            for i, book in enumerate(unavailable_books, start= 1):
+                print(f'{i}. {book}')
+
             print('\nEnter Book Title to Return, (Q) to Quit.')
-            book_choice = input('Title (case sensitive): ')
-            for book_dict in self.books:
-                if book_choice == book_dict['Title'] and book_dict['Status'] == 'UNAVAILABLE':
-                    count += 1
-                    print(f'\n({book_dict['Status']}) - {book_dict['Title']}, By {book_dict['Author']}\n')
+            book_choice = input('Title: ')
+            if book_choice.lower() == 'q':
+                print('Returning to Menu...\n')
+                return
+            found = False
+            for book in unavailable_books:
+                if book_choice.lower() == book.title.lower():
+                    found = True
+                    print(f'\n{book}\n')
                     while True:
                         choice = input('Return This Book? (Y/N): ')
-                        if choice == 'Y':
-                            book_dict['Status'] = 'AVAILABLE'
-                            print(f'{book_dict['Title']}, By {book_dict['Author']} Returned')
+                        if choice.lower() == 'y':
+                            book.status = 'AVAILABLE'
+                            print(f'{book.title}, By {book.author} Returned')
                             break
-                        elif choice == 'N':
+                        elif choice.lower() == 'n':
                             break
-            if book_choice == 'Q':
-                print()
-                return
-            if count == 0:
-                print('Invalid Book Title')
+            if not found:
+                print(f"'{book_choice}' is Not Currently Checked Out or Does Not Exist.")
                 continue
 
-    def add_to_database(self, status = 'AVAILABLE'):
+    def add_to_database(self):
         book_count = int(input('How many books to add?: '))
         print()
         for count in range(book_count):
            print(f'- Book {count + 1} -')
-           book = {'Title':input('Enter Book Title: '), 'Author':input('Enter Author: '), 'Status':status}
-           print()
+           book = Book(input('Enter Book Title: '), input('Enter Author: '))
            self.books.append(book)
-        if book_count <= 0:
            print()
 
 library = Library()
@@ -108,7 +104,7 @@ while True:
         if len(library.books) == 0:
             print('DATABASE EMPTY\n')
             continue
-        library.library_status()
+        library.library_list()
     elif check == 2:
         if len(library.books) == 0:
             print('DATABASE EMPTY\n')
